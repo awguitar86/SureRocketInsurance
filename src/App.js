@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import RatingInfo from './RatingInfo';
+import QuoteOverview from './QuoteOverview';
+import { Container } from '@mui/material';
+import { styles } from './styles';
 
 function App() {
+  const [hasQuote, setHasQuote] = useState(false);
+  const [quoteRes, setQuoteRes] = useState();
+
+  const handlePostRating = async (ratingBody) => {
+    const res = fetch('https://fed-challenge-api.sure.now.sh/api/v1/quotes', {
+      method: 'POST',
+      body: ratingBody
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container
+      sx={styles.mainContainer}
+      maxWidth={false}
+    >
+      {!hasQuote ? (
+        <RatingInfo />
+      ) : (
+        <QuoteOverview />
+      )}
+    </Container>
   );
 }
 
