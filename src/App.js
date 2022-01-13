@@ -37,8 +37,6 @@ function App() {
     }
   };
 
-  console.log(quoteRes);
-
   return (
     <Container sx={styles.mainContainer} maxWidth={false}>
       {!hasLaunched && !hasQuote && (

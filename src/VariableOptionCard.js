@@ -11,7 +11,6 @@ import {
 import { styles } from './styles';
 
 const VariableOptionCard = ({ option, handleUpdateQuote }) => {
-  console.log(option);
   return (
     <Card sx={styles.card}>
       <CardContent>

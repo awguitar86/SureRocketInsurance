@@ -4,8 +4,6 @@ import { styles } from './styles';
 import VariableOptionsCard from './VariableOptionCard';
 
 const QuoteOverview = ({ quoteRes, setQuoteRes }) => {
-  console.log(quoteRes);
-
   const updateQuote = async (resBody) => {
     try {
       const res = await fetch(
