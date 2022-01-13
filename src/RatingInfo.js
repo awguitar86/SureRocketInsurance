@@ -1,21 +1,26 @@
-import { Button, Box, TextField, Typography } from '@mui/material';
+import { Button, Box, TextField, Typography, CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
 import { styles } from './styles';
 
-const RatingInfo = () => {
+const RatingInfo = ({handlePostRating}) => {
   const [names, setNames] = useState({});
-  const [ratingData, setRatingData] = useState({});
+  const [address, setAddress] = useState({});
+  const [postal, setPostal] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
-    if (e.target.name === 'first_name' || 'last_name') {
+    if (e.target.name === 'first_name' || e.target.name === 'last_name') {
       setNames((prev) => ({...prev, [e.target.name]: e.target.value}));
     } else {
-      setRatingData((prev) => ({...prev, [e.target.name]: e.target.value }));
+      setAddress((prev) => ({...prev, [e.target.name]: e.target.value }));
     }
   }
 
-  console.log(ratingData)
-  console.log(names);
+  const disabled = (
+    ['first_name', 'last_name'].every((key) => Object.keys(names).includes(key)))
+    && (['line_1', 'city', 'region'].every((key) => Object.keys(address).includes(key)))
+    && (postal.length === 5);
+
 
   return (
     <Box sx={styles.ratingFormContainer}>
@@ -26,8 +31,21 @@ const RatingInfo = () => {
       <TextField onChange={(e) => handleChange(e)} name='line_2' variant='standard' sx={styles.ratingInput} fullWidth={true} color='primary' label='Address 2'/>
       <TextField onChange={(e) => handleChange(e)} name='city' required variant='standard' sx={styles.ratingInput} fullWidth={true} color='primary' label='City'/>
       <TextField onChange={(e) => handleChange(e)} name='region' required variant='standard' sx={styles.ratingInput} fullWidth={true} color='primary' label='State'/>
-      <TextField onChange={(e) => handleChange(e)} name='postal' required variant='standard' sx={styles.ratingInput} fullWidth={true} color='primary' label='Zip Code'/>
-      <Button variant='contained' color='primary'>Submit</Button>
+      <TextField onChange={(e) => setPostal(e.target.value)} name='postal' required variant='standard' sx={styles.ratingInput} fullWidth={true} color='primary' label='Zip Code'/>
+      { !isLoading ? (
+        <Button
+          disabled={!disabled}
+          variant='contained'
+          color='primary'
+          onClick={() => {
+            handlePostRating({...names, address: {...address, postal}});
+            setIsLoading(true);
+          }}>
+            Submit
+        </Button>
+      ) : (
+        <CircularProgress />
+      )}
     </Box>
   )
 }
